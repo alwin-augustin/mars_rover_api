@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  api:
+    build: .
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_NAME=mars_photos
+      - DB_USER=user
+      - DB_PASSWORD=password
+    volumes:
+      - ./downloads:/app/downloads
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=mars_photos
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
