@@ -45,7 +45,6 @@ def insert_photo_metadata(photo, db_connection):
     cursor.execute("""
         INSERT INTO photos (id, sol, camera_name, img_src, earth_date, rover_name)
         VALUES (%s, %s, %s, %s, %s, %s)
-        ON CONFLICT (id) DO NOTHING;
     """, (
         photo['id'],
         photo['sol'],
@@ -78,7 +77,9 @@ def main():
         save_photos(latest_photos, 'downloads')
         for photo in latest_photos:
             insert_photo_metadata(photo, db_connection)
-    
+    photo_metadata = get_photos_metadata(db_connection)
+    for metadata in photo_metadata:
+        print(metadata)
     db_connection.close()
 
 if __name__ == "__main__":
